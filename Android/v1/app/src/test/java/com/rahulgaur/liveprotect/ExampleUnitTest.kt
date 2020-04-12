@@ -1,4 +1,4 @@
-package com.example.liveprotect
+package com.rahulgaur.liveprotect
 
 import org.junit.Test
 
