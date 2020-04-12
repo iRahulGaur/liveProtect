@@ -112,7 +112,7 @@ class LocationService : Service() {
 
     private fun uploadLocation(location: Location?) {
 
-        val locationMap: HashMap<String, String> = HashMap()
+        val locationMap: HashMap<String, Any> = HashMap()
 
         val latitude: String = location!!.latitude.toString()
         val longitude: String = location.longitude.toString()
@@ -121,7 +121,7 @@ class LocationService : Service() {
         locationMap["latitude"] = latitude
         locationMap["longitude"] = longitude
         locationMap["accuracy"] = accuracy
-        locationMap["time"] = FieldValue.serverTimestamp().toString()
+        locationMap["time"] = FieldValue.serverTimestamp()
 
         Log.e(TAG, "this is locationMap : $locationMap")
 

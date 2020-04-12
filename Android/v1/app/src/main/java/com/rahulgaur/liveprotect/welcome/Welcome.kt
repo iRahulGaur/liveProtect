@@ -33,9 +33,18 @@ class Welcome : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
+        checkSignIn()
+
         configureGoogleSignInAndFirebase()
 
         welcomeGoogleButton.setOnClickListener { signIn() }
+    }
+
+    private fun checkSignIn() {
+        firebaseAuth = FirebaseAuth.getInstance()
+        if (firebaseAuth.currentUser != null) {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
     }
 
     private fun configureGoogleSignInAndFirebase() {
@@ -46,7 +55,6 @@ class Welcome : AppCompatActivity() {
                 .build()
         mGoogleSignInClient =
             GoogleSignIn.getClient(this, mGoogleSignInOptions)
-        firebaseAuth = FirebaseAuth.getInstance()
     }
 
     private fun signIn() {
