@@ -1,4 +1,4 @@
-package com.rahulgaur.liveprotect
+package com.rahulgaur.liveprotect.home
 
 import android.Manifest
 import android.content.Intent
@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import com.rahulgaur.liveprotect.R
 import com.rahulgaur.liveprotect.service.LocationService
 import kotlinx.android.synthetic.main.activity_main.*
 

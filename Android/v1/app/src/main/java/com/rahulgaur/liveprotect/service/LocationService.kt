@@ -10,13 +10,13 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.rahulgaur.liveprotect.MainActivity
 import com.rahulgaur.liveprotect.R
+import com.rahulgaur.liveprotect.home.MainActivity
 
 class LocationService : Service() {
 
@@ -40,12 +40,16 @@ class LocationService : Service() {
     private lateinit var locationManager: LocationManager
     private lateinit var firebaseFirestore: FirebaseFirestore
     private lateinit var handler: Handler
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var userID: String
 
     @SuppressLint("MissingPermission")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         firebaseFirestore = FirebaseFirestore.getInstance()
         handler = Handler()
+        firebaseAuth = FirebaseAuth.getInstance()
+        userID = firebaseAuth.currentUser!!.uid
 
         //do heavy ork on another thread
         Log.e(TAG, "inside onStartCommand: ")
@@ -121,7 +125,7 @@ class LocationService : Service() {
 
         Log.e(TAG, "this is locationMap : $locationMap")
 
-        firebaseFirestore.collection("Locations").document("user1")
+        firebaseFirestore.collection("Locations").document(userID)
             .set(locationMap)
             .addOnSuccessListener(Activity()) {
                 Log.e(TAG, "location uploaded to firebase")
@@ -133,11 +137,6 @@ class LocationService : Service() {
                     TAG,
                     "error in uploading location to firebase ${exception.localizedMessage}"
                 )
-                Toast.makeText(
-                    applicationContext,
-                    "Some error uploading data ${exception.localizedMessage}",
-                    Toast.LENGTH_SHORT
-                ).show()
                 handler.postDelayed({
                     getLocation()
                 }, LOCATION_GAP.toLong())
